@@ -3,9 +3,9 @@ import {RunEventType, RunOpts} from "@gptscript-ai/gptscript";
 import g from "@/lib/gptScriptInstance";
 import path from "path";
 
-const script = path.resolve(process.cwd(), "story-book.gpt");
+ //const script = path.resolve(process.cwd(), "story-book.gpt");
 
-
+const script = "app/api/run-script/story-book.gpt";
 console.log("API route script path:", script);
 
 
