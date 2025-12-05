@@ -59,6 +59,17 @@ export async function POST(request: NextRequest) {
                   })}\n\n`
                 )
               );
+              controller.enqueue(
+  encoder.encode(
+    `event: ${JSON.stringify({
+      type: "storyComplete",
+      message:
+        "Your story has been generated successfully! You can find it in the Stories tab.",
+    })}\n\n`
+  )
+);
+
+controller.close();
             } catch (err) {
               console.error("Failed to parse RESULT_JSON:", err);
             }
