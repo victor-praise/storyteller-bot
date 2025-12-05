@@ -18,6 +18,30 @@ function StoryWriter() {
     const [currentTool, setCurrentTool] = useState<string|null>(null);
     const [events, setEvents] = useState<Frame[]>([]);
 
+    async function generateImageForPage({
+  prompt,
+  storyTitle,
+  pageNumber,
+}: {
+  prompt: string;
+  storyTitle: string;
+  pageNumber: number;
+}) {
+  const res = await fetch("/api/generate-story-image", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ prompt, storyTitle, pageNumber }),
+  });
+
+  if (!res.ok) {
+    console.error("Failed to generate image", await res.json());
+    return null;
+  }
+
+  const data = await res.json();
+  return data.url as string;
+}
+
 
     async function handleStream(reader:ReadableStreamDefaultReader<Uint8Array>, decoder:TextDecoder){
         while(true){
