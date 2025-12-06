@@ -70,6 +70,11 @@ function StoryWriter() {
 
                         setRunStarted(false);
                     }
+                      else if (parsedData.type === "storyComplete") {
+            
+            setProgress(parsedData.message);
+            setCurrentTool(null);
+        }
                     else{
                         setEvents((prevEvents) => [...prevEvents, parsedData]);
                     }
