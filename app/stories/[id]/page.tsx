@@ -1,5 +1,6 @@
 import { getAllStories, getStory } from "@/lib/stories";
 import { notFound } from "next/navigation";
+import Story from "@/components/Story";
 
 interface StoryPagesProps{
     params:{
