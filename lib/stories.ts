@@ -22,7 +22,7 @@ const stories: Story[] = storyFolders.map((folderName) => {
     files.forEach(file=>{
         const filePath = path.join(storyPath, file);
         const ext = path.extname(file).substring(1);
-        const pageNumber = file.match(/page(\d+)\./)?.[1];
+        const pageNumber = file.match(/page(\d+)\./i)?.[1];
         const base = path.basename(file, ext);
 
         if(pageNumber){

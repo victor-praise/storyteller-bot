@@ -1,12 +1,14 @@
 'use client';
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "./ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./ui/select";
 import { Textarea } from "./ui/textarea";
 import { Readable } from "stream";
 import { Frame } from "@gptscript-ai/gptscript";
 import renderEventMessage from "@/lib/renderEventMessage";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 const storiesPath = "public/stories"
 function StoryWriter() {
@@ -18,29 +20,7 @@ function StoryWriter() {
     const [currentTool, setCurrentTool] = useState<string|null>(null);
     const [events, setEvents] = useState<Frame[]>([]);
 
-    async function generateImageForPage({
-  prompt,
-  storyTitle,
-  pageNumber,
-}: {
-  prompt: string;
-  storyTitle: string;
-  pageNumber: number;
-}) {
-  const res = await fetch("/api/generate-story-image", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ prompt, storyTitle, pageNumber }),
-  });
-
-  if (!res.ok) {
-    console.error("Failed to generate image", await res.json());
-    return null;
-  }
-
-  const data = await res.json();
-  return data.url as string;
-}
+ const router = useRouter();
 
 
     async function handleStream(reader:ReadableStreamDefaultReader<Uint8Array>, decoder:TextDecoder){
@@ -74,6 +54,7 @@ function StoryWriter() {
             
             setProgress(parsedData.message);
             setCurrentTool(null);
+             setRunFinished(true);
         }
                     else{
                         setEvents((prevEvents) => [...prevEvents, parsedData]);
@@ -110,6 +91,15 @@ function StoryWriter() {
         }
     }
 
+    useEffect(()=>{
+        if(runFinished){
+            toast.success("Story generation complete!",{
+                action: (
+                    <Button onClick={() => router.push("/stories")}>View Stories</Button>
+                )
+            });
+        }
+    },[runFinished,router]);
   return (
     <div className="flex flex-col container">
         <section className="flex-1 flex flex-col border border-purple-300 rounded-md p-10 space-y-2">
