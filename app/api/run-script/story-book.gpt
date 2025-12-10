@@ -60,22 +60,25 @@ If your image fails to generate due to community guidelines, generate a differen
 You are only allowed to try again 2 maximum.
 
 ---
+---
 name: mkdir
 tools: sys.exec, sys.abort
 description: Creates a specified directory
 args: dir: Path to the directory to be created. Will create parent directories.
 
-You are running on Windows. Do NOT use bash. Always use the Windows command shell.
+Do the following steps:
 
-Do the following steps in order:
-
-1. If the ${dir} is empty or only whitespace, call sys.abort with a clear error like:
+1. If ${dir} is empty or only whitespace, call sys.abort with a clear error like:
    "Directory path was empty when calling mkdir. Please ensure a valid dir is passed."
 
-2. Call sys.exec with:
-   - command: if not exist "${dir}" mkdir "${dir}"
-   - directory: "."
+2. Determine the correct command based on the operating system:
+   - If running on Windows, the command should be:
+       if not exist "${dir}" mkdir "${dir}"
+   - If running on Linux or macOS, the command should be:
+       mkdir -p "${dir}"
 
-3. If sys.exec returns an error or output that indicates failure, call sys.abort and include
-   the failure message.
+3. Use sys.exec to run the appropriate command.
+
+4. If sys.exec indicates failure, call sys.abort with the error message.
+
 
