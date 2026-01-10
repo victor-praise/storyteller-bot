@@ -1,5 +1,5 @@
 import Image from "next/image";
-import logo from "../images/ChatGPT Image Nov 30, 2025, 11_50_37 PM.png"
+import logo from "../public/images/ChatGPT Image Nov 30, 2025, 11_50_37 PM.png"
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import StoryWriter from "@/components/StoryWriter";
